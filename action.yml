@@ -105,14 +105,14 @@ runs:
       shell: bash
       name: Update Guix
       if: ${{ inputs.pullAfterInstall == 'true' }}
-    # Use daemon from user, so we don’t have to `guix pull` twice.
-    - run: |
-        sudo sed -i "s/root/${USER}/" /etc/systemd/system/guix-daemon.service
-        sudo systemctl daemon-reload
-        sudo systemctl restart guix-daemon
-      shell: bash
-      name: Restart daemon
-      if: ${{ inputs.pullAfterInstall == 'true' }}
+    # # Use daemon from user, so we don’t have to `guix pull` twice.
+    # - run: |
+    #     sudo sed -i "s/root/${USER}/" /etc/systemd/system/guix-daemon.service
+    #     sudo systemctl daemon-reload
+    #     sudo systemctl restart guix-daemon
+    #   shell: bash
+    #   name: Restart daemon
+    #   if: ${{ inputs.pullAfterInstall == 'true' }}
     # Initially inherit root’s Guix profile, so we can use guix commands without sudo
     - run: |
         echo "$HOME/.config/guix/current/bin" >> $GITHUB_PATH
