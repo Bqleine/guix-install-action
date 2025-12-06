@@ -69,9 +69,24 @@ runs:
         wget "https://savannah.gnu.org/people/viewgpg.php?user_id=15145" -qO - | sudo gpg --import -
       shell: bash
       name: Fetch key
-    - run: sudo /etc/init.d/apparmor stop
+    - run: |
+        sudo mkdir -p /etc/apparmor.d/
+        cat <<EOF | sudo tee /etc/apparmor.d/guix
+        abi <abi/3.0>,
+
+        include <tunables/global>
+
+        profile guix /gnu/store/{*-guix-command,*/bin/guix-daemon,*/bin/guix,*/libexec/guix/giule,*/bin/guile} flags=(unconfined) {
+        userns,
+
+        include if exists <local/guix>
+        }
+        EOF
       shell: bash
-      name: Stop AppArmor
+      name: Install AppArmor profile
+    - run: sudo apparmor_parser -r /etc/apparmor.d/guix
+      shell: bash
+      name: Load AppArmor profile
     - run: |
         export GUIX_BINARY_FILE_NAME=guix-binary-nightly.x86_64-linux.tar.xz
         sudo --preserve-env=GUIX_BINARY_FILE_NAME -- bash -c 'yes | bash guix-install.sh'
