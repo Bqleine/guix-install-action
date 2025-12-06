@@ -69,6 +69,9 @@ runs:
         wget "https://savannah.gnu.org/people/viewgpg.php?user_id=15145" -qO - | sudo gpg --import -
       shell: bash
       name: Fetch key
+    - run: sudo /etc/init.d/apparmor stop
+      shell: bash
+      name: Stop AppArmor
     - run: |
         export GUIX_BINARY_FILE_NAME=guix-binary-nightly.x86_64-linux.tar.xz
         sudo --preserve-env=GUIX_BINARY_FILE_NAME -- bash -c 'yes | bash guix-install.sh'
