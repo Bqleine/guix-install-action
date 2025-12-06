@@ -100,7 +100,7 @@ runs:
         EOF
       shell: bash
       name: Create channel file
-    - run: sudo /var/guix/profiles/per-user/root/current-guix/bin/guix pull --fallback -C ${{ runner.temp }}/channels.scm
+    - run: sudo /var/guix/profiles/per-user/root/current-guix/bin/guix pull --fallback -C ${{ runner.temp }}/channels.scm --url=https://https.git.savannah.gnu.org/git/guix.git
       shell: bash
       name: Update Guix
       if: ${{ inputs.pullAfterInstall == 'true' }}
